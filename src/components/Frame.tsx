@@ -1,6 +1,11 @@
 "use client";
 
 import { useEffect, useCallback, useState } from "react";
+interface RecentLink {
+  url: string;
+  timestamp: number;
+  title?: string;
+}
 import type { FrameContext } from "@farcaster/frame-sdk";
 import sdk, {
   AddFrame,
@@ -25,8 +30,6 @@ import Layout from "~/components/Layout";
 import { Avatar } from "~/components/Avatar";
 import { getRecentLinks, saveLink } from "~/lib/storage";
 import { PurpleButton } from "~/components/ui/PurpleButton";
-
-"use client";
 
 function SocialLinks({ recentLinks }: { recentLinks: RecentLink[] }) {
   return (
