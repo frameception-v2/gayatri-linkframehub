@@ -2,11 +2,6 @@
 
 import { useEffect, useCallback, useState } from "react";
 import { clsx } from "clsx";
-interface RecentLink {
-  url: string;
-  timestamp: number;
-  title?: string;
-}
 import type { FrameContext } from "@farcaster/frame-sdk";
 import sdk, {
   AddFrame,
@@ -33,8 +28,15 @@ import { getRecentLinks, saveLink } from "~/lib/storage";
 import { PurpleButton } from "~/components/ui/PurpleButton";
 
 import { RecentLinks } from "./RecentLinks";
+import { ContextMenu } from "~/components/ContextMenu";
 
-function SocialLinks() {
+function SocialLinks({
+  setSelectedUrl,
+  setMenuPosition
+}: {
+  setSelectedUrl: (url: string | null) => void;
+  setMenuPosition: (pos: { x: number; y: number }) => void;
+}) {
   return (
     <div className="flex flex-col gap-3 w-full max-w-[300px] mx-auto">
       {/* Permanent links */}
