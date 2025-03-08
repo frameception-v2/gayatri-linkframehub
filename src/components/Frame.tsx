@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useCallback, useState } from "react";
+import { clsx } from "clsx";
 interface RecentLink {
   url: string;
   timestamp: number;
@@ -58,7 +59,7 @@ function SocialLinks() {
         className="group relative overflow-hidden"
       >
         <PurpleButton 
-          className="w-full min-h-[48px] px-4 @media (hover: hover):hover:bg-purple-600 transition-colors"
+          className="w-full min-h-[48px] px-4 hover:bg-purple-600 transition-colors"
           size={48}
         >
           🐙 GitHub Repository
