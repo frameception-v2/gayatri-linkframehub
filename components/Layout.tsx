@@ -4,6 +4,7 @@ import { cn } from "~/lib/utils";
 import { type Context } from "@farcaster/frame-sdk";
 import { useState } from "react";
 import { useSwipe } from "~/hooks/useSwipe";
+import { useOrientation } from "~/hooks/useOrientation";
 
 export function Layout({
   children,
@@ -14,6 +15,7 @@ export function Layout({
   context?: Context.FrameContext;
   className?: string;
 }) {
+  const { orientation } = useOrientation();
   const [activePanel, setActivePanel] = useState(0);
   const panelCount = React.Children.count(children);
 
@@ -29,7 +31,7 @@ export function Layout({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2 gap-4",
+        `grid ${orientation === 'portrait' ? 'grid-cols-1' : 'grid-cols-2'} gap-4`,
         "min-h-[100dvh] h-full w-full",
         "p-4",
         "text-base leading-normal font-sans",
