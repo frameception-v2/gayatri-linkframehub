@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useCallback, useState } from "react";
+import type { FrameContext } from "@farcaster/frame-sdk";
 import sdk, {
   AddFrame,
   SignIn as SignInCore
@@ -20,9 +21,11 @@ import { useSession } from "next-auth/react";
 import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
-import { Layout } from "~/components/Layout";
+import Layout from "~/components/Layout";
 import { Avatar } from "~/components/Avatar";
 import { PurpleButton } from "~/components/ui/PurpleButton";
+
+"use client";
 
 function SocialLinks() {
   return (
@@ -34,7 +37,7 @@ function SocialLinks() {
         className="group relative overflow-hidden"
       >
         <PurpleButton 
-          className="w-full min-h-[48px] px-4 @media (hover: hover):hover:bg-purple-600 transition-colors"
+          className="w-full min-h-[48px] px-4 hover:bg-purple-600 transition-colors"
           size={48}
         >
           🌿 Farcaster Channel
