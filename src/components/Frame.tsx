@@ -22,6 +22,7 @@ import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
 import { Layout } from "~/components/Layout";
+import { Avatar } from "~/components/Avatar";
 
 function ExampleCard() {
   return (
@@ -48,6 +49,7 @@ export default function Frame() {
   const [addFrameResult, setAddFrameResult] = useState("");
 
   const addFrame = useCallback(async () => {
+    setAddFrameResult(""); // Reset result state
     try {
       await sdk.actions.addFrame();
     } catch (error) {
@@ -103,7 +105,7 @@ export default function Frame() {
       });
 
       console.log("Calling ready");
-      sdk.actions.ready({});
+      sdk.actions.ready();
 
       // Set up a MIPD Store, and request Providers.
       const store = createStore();
@@ -122,7 +124,7 @@ export default function Frame() {
         sdk.removeAllListeners();
       };
     }
-  }, [isSDKLoaded, addFrame]);
+  }, [isSDKLoaded, addFrame]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!isSDKLoaded) {
     return <div>Loading...</div>;
