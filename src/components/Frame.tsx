@@ -51,15 +51,17 @@ function SocialLinks({
           setMenuPosition({ x: e.clientX, y: e.clientY });
         }}
         {...useLongPress({
-          onLongPress: () => {
-            const rect = e.currentTarget.getBoundingClientRect()
-            setSelectedUrl(e.currentTarget.href)
+          onLongPress: (e: React.TouchEvent | React.MouseEvent) => {
+            const target = e.currentTarget as HTMLAnchorElement;
+            const rect = target.getBoundingClientRect();
+            setSelectedUrl(target.href);
             setMenuPosition({
               x: rect.left + rect.width/2,
               y: rect.top + rect.height/2
-            })
+            });
           },
-          onCancel: () => setSelectedUrl(null)
+          onCancel: () => setSelectedUrl(null),
+          delay: 500
         })}
       >
         <PurpleButton 
