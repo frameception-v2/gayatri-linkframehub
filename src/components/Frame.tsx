@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useCallback, useState, useRef, useReducer } from "react";
+import { ErrorBoundary } from "~/components/ErrorBoundary";
 import { useShakeDetector } from "~/lib/sensors";
 import { useOrientation } from "~/hooks/useOrientation";
 import type { AddFrameResult } from "@farcaster/frame-sdk";
