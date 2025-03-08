@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useCallback, useState, useRef } from "react";
+import { useEffect, useCallback, useState, useRef, useReducer } from "react";
+import { useShakeDetector } from "~/lib/sensors";
 import type { AddFrameResult } from "@farcaster/frame-sdk";
 import { useLongPress } from "~/hooks/useLongPress";
 import { usePressState } from "~/hooks/usePressState";
@@ -159,6 +160,13 @@ export default function Frame() {
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
   const [pressState, pressStateProps] = usePressState();
+  const [_, forceUpdate] = useReducer(x => x + 1, 0);
+
+  useShakeDetector(() => {
+    // Force refresh of recent links
+    getRecentLinks(); // This will update localStorage cache
+    forceUpdate();
+  });
 
   const [added, setAdded] = useState(false);
 

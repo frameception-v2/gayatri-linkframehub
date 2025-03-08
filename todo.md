@@ -17,7 +17,7 @@ Here's the optimized implementation checklist:
 - [x] Implement usePressState hook for interactive element states (hooks/usePressState.ts)
 - [x] Add keyboard avoidance logic in Layout component (components/Layout.tsx)
 - [x] Create orientation handler with resize observer (hooks/useOrientation.ts)
-- [ ] Implement shake detection and refresh action wiring (lib/sensors.ts)
+- [x] Implement shake detection and refresh action wiring (lib/sensors.ts)
 - [ ] Add state compression and sessionStorage hydration (lib/state.ts)
 - [ ] Create error boundaries and storage quota management (components/ErrorBoundary.tsx)
 
