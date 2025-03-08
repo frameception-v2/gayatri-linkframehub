@@ -23,6 +23,7 @@ import { useSession } from "next-auth/react";
 import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
+import "~/styles/ripple.css";
 import Layout from "~/components/Layout";
 import { Avatar } from "~/components/Avatar";
 import { getRecentLinks, saveLink } from "~/lib/storage";
@@ -45,7 +46,7 @@ function SocialLinks({
         href="https://warpcast.com/~/channel/frame"
         target="_blank"
         rel="noopener noreferrer"
-        className="group relative overflow-hidden"
+        className="group ripple-container"
         onContextMenu={(e) => {
           e.preventDefault();
           setSelectedUrl(e.currentTarget.href);
@@ -77,7 +78,7 @@ function SocialLinks({
         href="https://github.com/farcasterxyz/hub-monorepo"
         target="_blank"
         rel="noopener noreferrer"
-        className="group relative overflow-hidden"
+        className="group ripple-container" 
       >
         <PurpleButton 
           className="w-full min-h-[48px] px-4 hover:bg-purple-600 transition-colors"
