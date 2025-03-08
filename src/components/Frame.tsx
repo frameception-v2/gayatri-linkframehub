@@ -27,6 +27,7 @@ import { useSession } from "next-auth/react";
 import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
+import { compressAndSaveState, loadAndDecompressState } from "~/lib/state";
 import "~/styles/ripple.css";
 import Layout from "~/components/Layout";
 import { Avatar } from "~/components/Avatar";
@@ -163,11 +164,30 @@ export default function Frame() {
   const [pressState, pressStateProps] = usePressState();
   const [_, forceUpdate] = useReducer(x => x + 1, 0);
 
-  useShakeDetector(() => {
-    // Force refresh of recent links
-    getRecentLinks(); // This will update localStorage cache
+  useShakeDetector(async () => {
+    // Save state before refresh
+    const state = {
+      recentLinks: getRecentLinks(),
+      timestamp: Date.now()
+    };
+    await compressAndSaveState(state);
+    
+    // Refresh links
+    getRecentLinks(); // Update localStorage cache
     forceUpdate();
   });
+
+  // Hydrate state on mount
+  useEffect(() => {
+    const loadState = async () => {
+      const savedState = await loadAndDecompressState();
+      if (savedState?.recentLinks) {
+        savedState.recentLinks.forEach(link => saveLink(link));
+        forceUpdate();
+      }
+    };
+    loadState();
+  }, []);
 
   const [added, setAdded] = useState(false);
 
