@@ -2,6 +2,8 @@
 
 import { cn } from "~/lib/utils";
 import { type Context } from "@farcaster/frame-sdk";
+import { useState } from "react";
+import { useSwipe } from "~/hooks/useSwipe";
 
 export function Layout({
   children,
@@ -12,6 +14,18 @@ export function Layout({
   context?: Context.FrameContext;
   className?: string;
 }) {
+  const [activePanel, setActivePanel] = useState(0);
+  const panelCount = React.Children.count(children);
+
+  const handleSwipe = (direction: string) => {
+    if (direction === 'left' && activePanel < panelCount - 1) {
+      setActivePanel(prev => prev + 1);
+    } else if (direction === 'right' && activePanel > 0) {
+      setActivePanel(prev => prev - 1);
+    }
+  };
+
+  useSwipe(handleSwipe, { threshold: 50, velocity: 0.1 });
   return (
     <div
       className={cn(
@@ -19,6 +33,7 @@ export function Layout({
         "min-h-[100dvh] h-full w-full",
         "p-4",
         "text-base leading-normal font-sans",
+        "overflow-hidden",
         className
       )}
       style={{
@@ -28,7 +43,17 @@ export function Layout({
         paddingRight: context?.client.safeAreaInsets?.right ?? 0,
       }}
     >
-      {children}
+      <div
+        className="flex transition-transform duration-300 ease-out md:transform-none"
+        style={{
+          transform: `translateX(-${activePanel * 100}%)`,
+          width: `${panelCount * 100}%`
+        }}
+      >
+        {React.Children.map(children, (child) => (
+          <div className="w-full md:w-auto md:flex-1">{child}</div>
+        ))}
+      </div>
     </div>
   );
 }

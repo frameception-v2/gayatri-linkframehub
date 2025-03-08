@@ -4,7 +4,7 @@ Here's the optimized implementation checklist:
 - [x] Implement Avatar component with circular border and system fonts (components/Avatar.tsx)
 - [x] Add permanent social links with proper touch targets in Layout (components/Layout.tsx)
 - [ ] Develop useSwipe hook with touch event handlers and direction logic (hooks/useSwipe.ts)
-- [ ] Integrate swipe transitions and panel switching in Layout (components/Layout.tsx)
+- [x] Integrate swipe transitions and panel switching in Layout (components/Layout.tsx)
 - [ ] Create storage module with LRU cache and compression (lib/storage.ts)
 - [ ] Connect storage methods to Layout state for recent links (components/Layout.tsx)
 - [ ] Build RecentLinks component with scrollable container and relative timestamps (components/RecentLinks.tsx)
