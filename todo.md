@@ -9,7 +9,7 @@ Here's the optimized implementation checklist:
 - [x] Connect storage methods to Layout state for recent links (components/Layout.tsx)
 - [x] Build RecentLinks component with scrollable container and relative timestamps (components/RecentLinks.tsx)
 - [x] Wire RecentLinks to display data from storage in Layout (components/Layout.tsx)
-- [ ] Implement ContextMenu component with positioning logic (components/ContextMenu.tsx)
+- [x] Implement ContextMenu component with positioning logic (components/ContextMenu.tsx)
 - [ ] Add long-press detection hook for menu activation (hooks/useLongPress.ts)
 - [ ] Create share/copy actions in ContextMenu using Web APIs (components/ContextMenu.tsx)
 - [ ] Integrate ContextMenu with all link elements in both panels (components/Layout.tsx)

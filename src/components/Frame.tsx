@@ -43,6 +43,22 @@ function SocialLinks() {
         target="_blank"
         rel="noopener noreferrer"
         className="group relative overflow-hidden"
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setSelectedUrl(e.currentTarget.href);
+          setMenuPosition({ x: e.clientX, y: e.clientY });
+        }}
+        onTouchStart={(e) => {
+          const touch = e.touches[0];
+          setTimeout(() => {
+            setSelectedUrl(e.currentTarget.href);
+            setMenuPosition({ 
+              x: touch.clientX,
+              y: touch.clientY
+            });
+          }, 500);
+        }}
+        onTouchEnd={() => setSelectedUrl(null)}
       >
         <PurpleButton 
           className="w-full min-h-[48px] px-4 hover:bg-purple-600 transition-colors"
@@ -72,6 +88,8 @@ function SocialLinks() {
 export default function Frame() {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<sdk.FrameContext>();
+  const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
+  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
   const [added, setAdded] = useState(false);
 
@@ -168,6 +186,14 @@ export default function Frame() {
       />
       <SocialLinks />
       <RecentLinks recentLinks={getRecentLinks()} />
+      {selectedUrl && (
+        <ContextMenu
+          x={menuPosition.x}
+          y={menuPosition.y}
+          url={selectedUrl}
+          onClose={() => setSelectedUrl(null)}
+        />
+      )}
     </Layout>
   );
 }
