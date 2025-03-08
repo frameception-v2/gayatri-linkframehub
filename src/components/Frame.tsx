@@ -127,7 +127,7 @@ export default function Frame() {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<sdk.FrameContext>();
   const containerRef = useRef<HTMLDivElement>(null);
-  const initialHeight = useRef(window.visualViewport?.height || 0);
+  const initialHeight = useRef(typeof window !== 'undefined' ? window.visualViewport?.height || 0 : 0);
 
   useEffect(() => {
     const handleResize = () => {
@@ -250,6 +250,7 @@ export default function Frame() {
         />
         <SocialLinks />
         <RecentLinks recentLinks={getRecentLinks()} />
+      </div>
       {selectedUrl && (
         <ContextMenu
           x={menuPosition.x}
