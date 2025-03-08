@@ -114,7 +114,8 @@ function SocialLinks({
         })}
       >
         <PurpleButton 
-          className="w-full min-h-[48px] px-4 hover:bg-purple-600 transition-colors"
+          className="w-full min-h-[48px] px-4 hover:bg-purple-600 transition-colors relative"
+          {...pressStateProps}
         >
           🐙 GitHub Repository
         </PurpleButton>
@@ -127,9 +128,11 @@ export default function Frame() {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<sdk.FrameContext>();
   const containerRef = useRef<HTMLDivElement>(null);
-  const initialHeight = useRef(typeof window !== 'undefined' ? window.visualViewport?.height || 0 : 0);
+  const initialHeight = useRef(0);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    initialHeight.current = window.visualViewport?.height || 0;
     const handleResize = () => {
       if (!containerRef.current) return;
       
