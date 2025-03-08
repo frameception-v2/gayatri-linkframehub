@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState, useRef } from "react";
+import { useLongPress } from "~/hooks/useLongPress";
 import { clsx } from "clsx";
 import type { FrameContext } from "@farcaster/frame-sdk";
 import sdk, {

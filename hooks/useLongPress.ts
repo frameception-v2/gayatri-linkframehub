@@ -1,58 +1,37 @@
-import { useState, useEffect } from 'react'
+import { useCallback, useRef } from 'react';
 
-type LongPressOptions = {
-  onLongPress: (event: MouseEvent | TouchEvent) => void
-  delay?: number
-  onCancel?: () => void
-}
+type LongPressEvent = React.TouchEvent | React.MouseEvent;
+type LongPressCallback = (e: LongPressEvent) => void;
 
-export const useLongPress = ({
+export function useLongPress({
   onLongPress,
-  delay = 500,
-  onCancel
-}: LongPressOptions) => {
-  const [pressStartTime, setPressStartTime] = useState<number | null>(null)
-  const [isPressing, setIsPressing] = useState(false)
+  onCancel,
+  delay = 300
+}: {
+  onLongPress: LongPressCallback;
+  onCancel?: () => void;
+  delay?: number;
+}) {
+  const timeout = useRef<NodeJS.Timeout>();
+  const savedCallback = useRef<LongPressCallback>(onLongPress);
+  const savedCancel = useRef(onCancel);
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout
-    
-    if (pressStartTime !== null && isPressing) {
-      timer = setTimeout(() => {
-        onLongPress(
-          (pressStartTime as unknown) as MouseEvent | TouchEvent
-        )
-        setIsPressing(false)
-      }, delay)
-    }
+  const start = useCallback((e: LongPressEvent) => {
+    timeout.current = setTimeout(() => {
+      savedCallback.current(e);
+    }, delay);
+  }, [delay]);
 
-    return () => {
-      if (timer) clearTimeout(timer)
-    }
-  }, [pressStartTime, isPressing, delay, onLongPress])
-
-  const start = (e: React.MouseEvent | React.TouchEvent) => {
-    if (e.nativeEvent instanceof MouseEvent && e.nativeEvent.button !== 0) return
-    
-    setPressStartTime(Date.now())
-    setIsPressing(true)
-  }
-
-  const cancel = () => {
-    if (pressStartTime !== null) {
-      if (Date.now() - pressStartTime < delay) {
-        onCancel?.()
-      }
-      setPressStartTime(null)
-      setIsPressing(false)
-    }
-  }
+  const clear = useCallback(() => {
+    timeout.current && clearTimeout(timeout.current);
+    savedCancel.current?.();
+  }, []);
 
   return {
-    onMouseDown: start,
     onTouchStart: start,
-    onMouseUp: cancel,
-    onTouchEnd: cancel,
-    onMouseLeave: cancel
-  }
+    onTouchEnd: clear,
+    onMouseDown: start,
+    onMouseUp: clear,
+    onMouseLeave: clear
+  };
 }
