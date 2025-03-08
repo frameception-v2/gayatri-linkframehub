@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useCallback, useState, useRef, useReducer } from "react";
+import React, { useEffect, useCallback, useState, useRef, useReducer } from "react";
 import { useShakeDetector } from "~/lib/sensors";
 import { useOrientation } from "~/hooks/useOrientation";
 import type { AddFrameResult } from "@farcaster/frame-sdk";
 import { useLongPress } from "~/hooks/useLongPress";
 import { usePressState } from "~/hooks/usePressState";
-import { clsx } from "clsx";
+import { clsx } from "clsx"; // clsx is correctly imported but needs to be installed
 import type { FrameContext } from "@farcaster/frame-sdk";
 import sdk, {
   AddFrame,
@@ -29,7 +29,7 @@ import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
 import { compressAndSaveState, loadAndDecompressState } from "~/lib/state";
 import "~/styles/ripple.css";
-import Layout from "~/components/Layout";
+import { Layout } from "~/components/Layout";
 import { Avatar } from "~/components/Avatar";
 import { getRecentLinks, saveLink } from "~/lib/storage";
 import { PurpleButton } from "~/components/ui/PurpleButton";
