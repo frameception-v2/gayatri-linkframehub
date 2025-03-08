@@ -3,8 +3,7 @@
 import { useEffect, useCallback, useState } from "react";
 import sdk, {
   AddFrame,
-  SignIn as SignInCore,
-  type Context,
+  SignIn as SignInCore
 } from "@farcaster/frame-sdk";
 import {
   Card,
@@ -23,6 +22,7 @@ import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
 import { Layout } from "~/components/Layout";
 import { Avatar } from "~/components/Avatar";
+import { PurpleButton } from "~/components/ui/PurpleButton";
 
 function SocialLinks() {
   return (
@@ -60,7 +60,7 @@ function SocialLinks() {
 
 export default function Frame() {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
-  const [context, setContext] = useState<Context.FrameContext>();
+  const [context, setContext] = useState<sdk.FrameContext>();
 
   const [added, setAdded] = useState(false);
 
