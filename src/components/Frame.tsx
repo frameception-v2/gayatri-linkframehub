@@ -244,7 +244,10 @@ export default function Frame() {
   }
 
   return (
-    <Layout context={context}>
+    <Layout 
+      context={context}
+      className={orientation.isPortrait ? 'grid-cols-1' : 'grid-cols-2 gap-4'}
+    >
       <div className="keyboard-avoidance-container">
         <Avatar 
           src={context?.user?.avatar} 
