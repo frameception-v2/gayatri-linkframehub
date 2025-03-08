@@ -3,6 +3,7 @@
 import { useEffect, useCallback, useState, useRef } from "react";
 import type { AddFrameResult } from "@farcaster/frame-sdk";
 import { useLongPress } from "~/hooks/useLongPress";
+import { usePressState } from "~/hooks/usePressState";
 import { clsx } from "clsx";
 import type { FrameContext } from "@farcaster/frame-sdk";
 import sdk, {
@@ -47,7 +48,7 @@ function SocialLinks({
         href="https://warpcast.com/~/channel/frame"
         target="_blank"
         rel="noopener noreferrer"
-        className="group ripple-container"
+        className="group ripple-container relative overflow-hidden"
         onContextMenu={(e) => {
           e.preventDefault();
           setSelectedUrl(e.currentTarget.href);
@@ -68,7 +69,8 @@ function SocialLinks({
         })}
       >
         <PurpleButton 
-          className="w-full min-h-[48px] px-4 hover:bg-purple-600 transition-colors"
+          className="w-full min-h-[48px] px-4 hover:bg-purple-600 transition-colors relative"
+          {...pressStateProps}
         >
           🌿 Farcaster Channel
         </PurpleButton>
@@ -113,6 +115,7 @@ export default function Frame() {
   const [context, setContext] = useState<sdk.FrameContext>();
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
+  const [pressState, pressStateProps] = usePressState();
 
   const [added, setAdded] = useState(false);
 
