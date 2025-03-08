@@ -23,13 +23,15 @@ import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
 import Layout from "~/components/Layout";
 import { Avatar } from "~/components/Avatar";
+import { getRecentLinks, saveLink } from "~/lib/storage";
 import { PurpleButton } from "~/components/ui/PurpleButton";
 
 "use client";
 
-function SocialLinks() {
+function SocialLinks({ recentLinks }: { recentLinks: RecentLink[] }) {
   return (
     <div className="flex flex-col gap-3 w-full max-w-[300px] mx-auto">
+      {/* Permanent links */}
       <a
         href="https://warpcast.com/~/channel/frame"
         target="_blank"
