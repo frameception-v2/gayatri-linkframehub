@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useCallback, useState, useRef } from "react";
+import type { AddFrameResult } from "@farcaster/frame-sdk";
 import { useLongPress } from "~/hooks/useLongPress";
 import { clsx } from "clsx";
 import type { FrameContext } from "@farcaster/frame-sdk";
@@ -68,7 +69,6 @@ function SocialLinks({
       >
         <PurpleButton 
           className="w-full min-h-[48px] px-4 hover:bg-purple-600 transition-colors"
-          size={48}
         >
           🌿 Farcaster Channel
         </PurpleButton>
@@ -78,11 +78,28 @@ function SocialLinks({
         href="https://github.com/farcasterxyz/hub-monorepo"
         target="_blank"
         rel="noopener noreferrer"
-        className="group ripple-container" 
+        className="group ripple-container"
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setSelectedUrl(e.currentTarget.href);
+          setMenuPosition({ x: e.clientX, y: e.clientY });
+        }}
+        {...useLongPress({
+          onLongPress: (e: React.TouchEvent | React.MouseEvent) => {
+            const target = e.currentTarget as HTMLAnchorElement;
+            const rect = target.getBoundingClientRect();
+            setSelectedUrl(target.href);
+            setMenuPosition({
+              x: rect.left + rect.width/2,
+              y: rect.top + rect.height/2
+            });
+          },
+          onCancel: () => setSelectedUrl(null),
+          delay: 500
+        })}
       >
         <PurpleButton 
           className="w-full min-h-[48px] px-4 hover:bg-purple-600 transition-colors"
-          size={48}
         >
           🐙 GitHub Repository
         </PurpleButton>
