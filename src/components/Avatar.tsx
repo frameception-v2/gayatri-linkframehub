@@ -1,4 +1,4 @@
-import { cn } from "~/lib/utils";
+import { clsx } from "clsx";
 
 interface AvatarProps {
   src?: string;
@@ -10,7 +10,7 @@ interface AvatarProps {
 export function Avatar({ src, alt = "", size = 48, className }: AvatarProps) {
   return (
     <div 
-      className={cn(
+      className={clsx(
         "rounded-full border-2 border-white overflow-hidden",
         "font-system text-base leading-none", // System font stack
         className
