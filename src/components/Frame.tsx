@@ -21,6 +21,7 @@ import { useSession } from "next-auth/react";
 import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
+import { Layout } from "~/components/Layout";
 
 function ExampleCard() {
   return (
@@ -130,6 +131,6 @@ export default function Frame() {
   return (
     <Layout context={context}>
       <ExampleCard />
-    </div>
+    </Layout>
   );
 }

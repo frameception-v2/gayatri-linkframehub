@@ -3,7 +3,7 @@
 import { cn } from "~/lib/utils";
 import { type Context } from "@farcaster/frame-sdk";
 
-export default function Layout({
+export function Layout({
   children,
   context,
   className,
