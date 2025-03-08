@@ -50,17 +50,17 @@ function SocialLinks({
           setSelectedUrl(e.currentTarget.href);
           setMenuPosition({ x: e.clientX, y: e.clientY });
         }}
-        onTouchStart={(e) => {
-          const touch = e.touches[0];
-          setTimeout(() => {
-            setSelectedUrl(e.currentTarget.href);
-            setMenuPosition({ 
-              x: touch.clientX,
-              y: touch.clientY
-            });
-          }, 500);
-        }}
-        onTouchEnd={() => setSelectedUrl(null)}
+        {...useLongPress({
+          onLongPress: () => {
+            const rect = e.currentTarget.getBoundingClientRect()
+            setSelectedUrl(e.currentTarget.href)
+            setMenuPosition({
+              x: rect.left + rect.width/2,
+              y: rect.top + rect.height/2
+            })
+          },
+          onCancel: () => setSelectedUrl(null)
+        })}
       >
         <PurpleButton 
           className="w-full min-h-[48px] px-4 hover:bg-purple-600 transition-colors"
