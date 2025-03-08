@@ -130,6 +130,11 @@ export default function Frame() {
 
   return (
     <Layout context={context}>
+      <Avatar 
+        src={context?.user?.avatar} 
+        alt={context?.user?.username}
+        className="mx-auto mb-4"
+      />
       <ExampleCard />
     </Layout>
   );
