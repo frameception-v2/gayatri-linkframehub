@@ -2,6 +2,7 @@
 
 import { useEffect, useCallback, useState, useRef, useReducer } from "react";
 import { useShakeDetector } from "~/lib/sensors";
+import { useOrientation } from "~/hooks/useOrientation";
 import type { AddFrameResult } from "@farcaster/frame-sdk";
 import { useLongPress } from "~/hooks/useLongPress";
 import { usePressState } from "~/hooks/usePressState";
@@ -131,7 +132,7 @@ export default function Frame() {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<sdk.FrameContext>();
   const containerRef = useRef<HTMLDivElement>(null);
-  const orientation = useOrientation();
+  const orientation = useOrientation() || { isPortrait: true }; // Fallback for SSR
   const initialHeight = useRef(0);
 
   useEffect(() => {
