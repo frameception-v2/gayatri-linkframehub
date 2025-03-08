@@ -178,24 +178,33 @@ export default function Frame() {
   const [verificationResult, setVerificationResult] = useState<string | null>(null);
   const [verificationError, setVerificationError] = useState<string | null>(null);
 
-  // Signature verification handler
+  // Signature verification handler with proper Frame v2 integration
+  const [isVerifying, setIsVerifying] = useState(false);
   const verifySignature = useCallback(async () => {
     try {
-      if (!context?.signature) {
-        throw new Error("No signature available");
+      setIsVerifying(true);
+      setVerificationResult(null);
+      setVerificationError(null);
+
+      if (!context?.signature || !context.message) {
+        throw new Error("Missing required signature data");
       }
-      
-      const isValid = await sdk.verifyMessageSignature({
+
+      // Use Frame SDK's built-in verification with error handling
+      const { isValid, error } = await sdk.actions.verifyMessageSignature({
         message: context.message,
         signature: context.signature,
         address: context.address
       });
 
-      setVerificationResult(isValid ? "Signature valid ✅" : "Signature invalid ❌");
-      setVerificationError(null);
+      if (error) throw error;
+      
+      setVerificationResult(isValid ? "Signature validated successfully" : "Invalid signature detected");
     } catch (error) {
-      setVerificationResult(null);
       setVerificationError(error instanceof Error ? error.message : "Verification failed");
+      console.error("Signature verification error:", error);
+    } finally {
+      setIsVerifying(false);
     }
   }, [context]);
   
@@ -343,18 +352,19 @@ export default function Frame() {
             <PurpleButton
               onClick={verifySignature}
               className="w-full"
+              disabled={isVerifying}
             >
-              Verify Signature
+              {isVerifying ? "Verifying..." : "Verify Message Signature"}
             </PurpleButton>
             
             {verificationResult && (
               <div className="mt-2 text-center text-sm text-purple-100">
-                {verificationResult}
+                <span className="font-semibold">✓ Verification Result:</span> {verificationResult}
               </div>
             )}
             {verificationError && (
               <div className="mt-2 text-center text-sm text-red-300">
-                {verificationError}
+                <span className="font-semibold">⚠ Security Alert:</span> {verificationError}
               </div>
             )}
           </div>
