@@ -20,5 +20,6 @@ Here's the optimized implementation checklist:
 - [x] Implement shake detection and refresh action wiring (lib/sensors.ts)
 - [x] Add state compression and sessionStorage hydration (lib/state.ts)
 - [x] Create error boundaries and storage quota management (components/ErrorBoundary.tsx)
+- [x] Implement signature verification for authenticated actions
 
 This list follows the exact dependency order from the original plan while maintaining 20 atomic implementation tasks. Each completed item brings the system closer to full functionality without overlap or redundant work. The sequence ensures mobile foundations are solid before adding interactions, followed by progressive enhancement of features.
