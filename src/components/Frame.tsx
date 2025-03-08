@@ -24,19 +24,37 @@ import { PROJECT_TITLE } from "~/lib/constants";
 import { Layout } from "~/components/Layout";
 import { Avatar } from "~/components/Avatar";
 
-function ExampleCard() {
+function SocialLinks() {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Welcome to the Frame Template</CardTitle>
-        <CardDescription>
-          This is an example card that you can customize or remove
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Label>Place content in a Card here.</Label>
-      </CardContent>
-    </Card>
+    <div className="flex flex-col gap-3 w-full max-w-[300px] mx-auto">
+      <a
+        href="https://warpcast.com/~/channel/frame"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group relative overflow-hidden"
+      >
+        <PurpleButton 
+          className="w-full min-h-[48px] px-4 @media (hover: hover):hover:bg-purple-600 transition-colors"
+          size={48}
+        >
+          🌿 Farcaster Channel
+        </PurpleButton>
+      </a>
+      
+      <a
+        href="https://github.com/farcasterxyz/hub-monorepo"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group relative overflow-hidden"
+      >
+        <PurpleButton 
+          className="w-full min-h-[48px] px-4 @media (hover: hover):hover:bg-purple-600 transition-colors"
+          size={48}
+        >
+          🐙 GitHub Repository
+        </PurpleButton>
+      </a>
+    </div>
   );
 }
 
@@ -137,7 +155,7 @@ export default function Frame() {
         alt={context?.user?.username}
         className="mx-auto mb-4"
       />
-      <ExampleCard />
+      <SocialLinks />
     </Layout>
   );
 }
