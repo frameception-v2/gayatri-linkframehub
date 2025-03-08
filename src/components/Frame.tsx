@@ -129,6 +129,15 @@ function SocialLinks({
   );
 }
 
+// Storage quota error check helper
+function isStorageQuotaError(error: unknown) {
+  return (
+    error instanceof DOMException &&
+    (error.name === 'QuotaExceededError' ||
+      error.name === 'NS_ERROR_DOM_QUOTA_REACHED')
+  );
+}
+
 export default function Frame() {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<sdk.FrameContext>();
@@ -164,17 +173,28 @@ export default function Frame() {
   const [pressState, pressStateProps] = usePressState();
   const [_, forceUpdate] = useReducer(x => x + 1, 0);
 
+  const [storageError, setStorageError] = useState<string | null>(null);
+  
   useShakeDetector(async () => {
-    // Save state before refresh
-    const state = {
-      recentLinks: getRecentLinks(),
-      timestamp: Date.now()
-    };
-    await compressAndSaveState(state);
-    
-    // Refresh links
-    getRecentLinks(); // Update localStorage cache
-    forceUpdate();
+    try {
+      // Save state before refresh
+      const state = {
+        recentLinks: getRecentLinks(),
+        timestamp: Date.now()
+      };
+      await compressAndSaveState(state);
+      
+      // Refresh links
+      getRecentLinks(); // Update localStorage cache
+      forceUpdate();
+      setStorageError(null);
+    } catch (error) {
+      if (isStorageQuotaError(error)) {
+        setStorageError("Storage full - Clear some links or browser data");
+      } else {
+        setStorageError("Error saving data - Try again");
+      }
+    }
   });
 
   // Hydrate state on mount
@@ -276,7 +296,8 @@ export default function Frame() {
   }
 
   return (
-    <Layout 
+    <ErrorBoundary>
+      <Layout 
       context={context}
       className={orientation.isPortrait ? 'grid-cols-1' : 'grid-cols-2 gap-4'}
     >
@@ -301,6 +322,18 @@ export default function Frame() {
           onClose={() => setSelectedUrl(null)}
         />
       )}
+      {storageError && (
+        <div className="fixed bottom-4 left-4 right-4 bg-red-100 text-red-800 p-4 rounded-lg shadow-lg flex items-center justify-between">
+          <span>{storageError}</span>
+          <PurpleButton 
+            onClick={() => setStorageError(null)}
+            className="!bg-red-600 !hover:bg-red-700"
+          >
+            Dismiss
+          </PurpleButton>
+        </div>
+      )}
     </Layout>
+    </ErrorBoundary>
   );
 }
