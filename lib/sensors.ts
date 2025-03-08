@@ -5,12 +5,15 @@ const REFRESH_DEBOUNCE = 2000; // 2 seconds between shakes
 
 export function useShakeDetector(onShake: () => void) {
   useEffect(() => {
-    if (typeof window === 'undefined' || !('DeviceMotionEvent' in window)) return;
+    if (typeof window === 'undefined' || !('DeviceMotionEvent' in window)) {
+      return () => {}; // Return empty cleanup function
+    }
 
     let lastUpdate = 0;
     let lastX: number | null = null;
     let lastY: number | null = null;
     let lastZ: number | null = null;
+    let mounted = true;
     
     const handleMotion = (event: DeviceMotionEvent) => {
       const acceleration = event.accelerationIncludingGravity;
@@ -47,6 +50,9 @@ export function useShakeDetector(onShake: () => void) {
     };
 
     window.addEventListener('devicemotion', handleMotion);
-    return () => window.removeEventListener('devicemotion', handleMotion);
+    return () => {
+      mounted = false;
+      window.removeEventListener('devicemotion', handleMotion);
+    };
   }, [onShake]);
 }
