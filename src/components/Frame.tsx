@@ -175,6 +175,29 @@ export default function Frame() {
   const [_, forceUpdate] = useReducer(x => x + 1, 0);
 
   const [storageError, setStorageError] = useState<string | null>(null);
+  const [verificationResult, setVerificationResult] = useState<string | null>(null);
+  const [verificationError, setVerificationError] = useState<string | null>(null);
+
+  // Signature verification handler
+  const verifySignature = useCallback(async () => {
+    try {
+      if (!context?.signature) {
+        throw new Error("No signature available");
+      }
+      
+      const isValid = await sdk.verifyMessageSignature({
+        message: context.message,
+        signature: context.signature,
+        address: context.address
+      });
+
+      setVerificationResult(isValid ? "Signature valid ✅" : "Signature invalid ❌");
+      setVerificationError(null);
+    } catch (error) {
+      setVerificationResult(null);
+      setVerificationError(error instanceof Error ? error.message : "Verification failed");
+    }
+  }, [context]);
   
   useShakeDetector(async () => {
     try {
@@ -314,6 +337,28 @@ export default function Frame() {
           pressStateProps={pressStateProps}
         />
         <RecentLinks recentLinks={getRecentLinks()} />
+        
+        {context?.signature && (
+          <div className="mt-6 border-t border-purple-200 pt-4">
+            <PurpleButton
+              onClick={verifySignature}
+              className="w-full"
+            >
+              Verify Signature
+            </PurpleButton>
+            
+            {verificationResult && (
+              <div className="mt-2 text-center text-sm text-purple-100">
+                {verificationResult}
+              </div>
+            )}
+            {verificationError && (
+              <div className="mt-2 text-center text-sm text-red-300">
+                {verificationError}
+              </div>
+            )}
+          </div>
+        )}
       </div>
       {selectedUrl && (
         <ContextMenu
