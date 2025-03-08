@@ -36,10 +36,12 @@ import { ContextMenu } from "~/components/ContextMenu";
 
 function SocialLinks({
   setSelectedUrl,
-  setMenuPosition
+  setMenuPosition,
+  pressStateProps
 }: {
   setSelectedUrl: (url: string | null) => void;
   setMenuPosition: (pos: { x: number; y: number }) => void;
+  pressStateProps: ReturnType<typeof usePressState>[1];
 }) {
   return (
     <div className="flex flex-col gap-3 w-full max-w-[300px] mx-auto">
@@ -128,6 +130,7 @@ export default function Frame() {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<sdk.FrameContext>();
   const containerRef = useRef<HTMLDivElement>(null);
+  const orientation = useOrientation();
   const initialHeight = useRef(0);
 
   useEffect(() => {
@@ -254,7 +257,11 @@ export default function Frame() {
           alt={context?.user?.username}
           className="mx-auto mb-4"
         />
-        <SocialLinks />
+        <SocialLinks 
+          setSelectedUrl={setSelectedUrl}
+          setMenuPosition={setMenuPosition}
+          pressStateProps={pressStateProps}
+        />
         <RecentLinks recentLinks={getRecentLinks()} />
       </div>
       {selectedUrl && (
