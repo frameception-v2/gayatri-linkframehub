@@ -31,7 +31,9 @@ import { Avatar } from "~/components/Avatar";
 import { getRecentLinks, saveLink } from "~/lib/storage";
 import { PurpleButton } from "~/components/ui/PurpleButton";
 
-function SocialLinks({ recentLinks }: { recentLinks: RecentLink[] }) {
+import { RecentLinks } from "./RecentLinks";
+
+function SocialLinks() {
   return (
     <div className="flex flex-col gap-3 w-full max-w-[300px] mx-auto">
       {/* Permanent links */}
@@ -164,6 +166,7 @@ export default function Frame() {
         className="mx-auto mb-4"
       />
       <SocialLinks />
+      <RecentLinks recentLinks={getRecentLinks()} />
     </Layout>
   );
 }
