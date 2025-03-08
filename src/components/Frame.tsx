@@ -126,6 +126,30 @@ function SocialLinks({
 export default function Frame() {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<sdk.FrameContext>();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const initialHeight = useRef(window.visualViewport?.height || 0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (!containerRef.current) return;
+      
+      const viewport = window.visualViewport;
+      if (!viewport) return;
+
+      // Check if keyboard is open (viewport height reduced by more than 100px)
+      if (initialHeight.current - viewport.height > 100) {
+        containerRef.current.style.paddingBottom = `${initialHeight.current - viewport.height}px`;
+      } else {
+        containerRef.current.style.paddingBottom = '0';
+      }
+    };
+
+    const viewport = window.visualViewport;
+    if (viewport) {
+      viewport.addEventListener('resize', handleResize);
+      return () => viewport.removeEventListener('resize', handleResize);
+    }
+  }, []);
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
   const [pressState, pressStateProps] = usePressState();
@@ -218,13 +242,14 @@ export default function Frame() {
 
   return (
     <Layout context={context}>
-      <Avatar 
-        src={context?.user?.avatar} 
-        alt={context?.user?.username}
-        className="mx-auto mb-4"
-      />
-      <SocialLinks />
-      <RecentLinks recentLinks={getRecentLinks()} />
+      <div className="keyboard-avoidance-container">
+        <Avatar 
+          src={context?.user?.avatar} 
+          alt={context?.user?.username}
+          className="mx-auto mb-4"
+        />
+        <SocialLinks />
+        <RecentLinks recentLinks={getRecentLinks()} />
       {selectedUrl && (
         <ContextMenu
           x={menuPosition.x}

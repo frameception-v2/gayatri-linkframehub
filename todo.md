@@ -15,7 +15,7 @@ Here's the optimized implementation checklist:
 - [x] Integrate ContextMenu with all link elements in both panels (components/Layout.tsx)
 - [x] Develop CSS ripple animations for touch feedback (styles/ripple.css)
 - [x] Implement usePressState hook for interactive element states (hooks/usePressState.ts)
-- [ ] Add keyboard avoidance logic in Layout component (components/Layout.tsx)
+- [x] Add keyboard avoidance logic in Layout component (components/Layout.tsx)
 - [ ] Create orientation handler with resize observer (hooks/useOrientation.ts)
 - [ ] Implement shake detection and refresh action wiring (lib/sensors.ts)
 - [ ] Add state compression and sessionStorage hydration (lib/state.ts)
