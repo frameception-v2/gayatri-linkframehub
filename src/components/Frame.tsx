@@ -80,7 +80,20 @@ function SocialLinks({
         href="https://github.com/farcasterxyz/hub-monorepo"
         target="_blank"
         rel="noopener noreferrer"
-        className="group ripple-container"
+        className="group ripple-container relative overflow-hidden"
+        {...useLongPress({
+          onLongPress: (e: React.TouchEvent | React.MouseEvent) => {
+            const target = e.currentTarget as HTMLAnchorElement;
+            const rect = target.getBoundingClientRect();
+            setSelectedUrl(target.href);
+            setMenuPosition({
+              x: rect.left + rect.width/2,
+              y: rect.top + rect.height/2
+            });
+          },
+          onCancel: () => setSelectedUrl(null),
+          delay: 500
+        })}
         onContextMenu={(e) => {
           e.preventDefault();
           setSelectedUrl(e.currentTarget.href);

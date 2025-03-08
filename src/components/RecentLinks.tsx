@@ -1,7 +1,7 @@
 import { cn } from "~/lib/utils";
 import { formatTimeAgo } from "~/lib/utils";
 
-interface RecentLink {
+export interface RecentLink {
   url: string;
   timestamp: number;
   title?: string;
