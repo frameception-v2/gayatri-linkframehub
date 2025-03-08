@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "~/lib/utils";
 import { PurpleButton } from "./ui/PurpleButton";
+import { CheckIcon, CopyIcon, Share1Icon } from "@radix-ui/react-icons";
 
 interface ContextMenuProps {
   x: number;
@@ -26,10 +27,16 @@ export function ContextMenu({ x, y, url, onClose, className }: ContextMenuProps)
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onClose]);
 
+  const [copySuccess, setCopySuccess] = useState(false);
+  
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(url);
-      onClose();
+      setCopySuccess(true);
+      setTimeout(() => {
+        setCopySuccess(false);
+        onClose();
+      }, 1500);
     } catch (err) {
       console.error("Failed to copy URL:", err);
     }
@@ -64,16 +71,18 @@ export function ContextMenu({ x, y, url, onClose, className }: ContextMenuProps)
       <div className="space-y-1">
         <PurpleButton
           onClick={handleCopy}
-          className="w-full justify-start text-sm"
+          className="w-full justify-start text-sm gap-2"
           variant="ghost"
         >
-          Copy URL
+          {copySuccess ? <CheckIcon className="w-4 h-4" /> : <CopyIcon className="w-4 h-4" />}
+          {copySuccess ? "Copied!" : "Copy URL"}
         </PurpleButton>
         <PurpleButton
           onClick={handleShare}
-          className="w-full justify-start text-sm"
+          className="w-full justify-start text-sm gap-2"
           variant="ghost"
         >
+          <Share1Icon className="w-4 h-4" />
           Share...
         </PurpleButton>
       </div>
